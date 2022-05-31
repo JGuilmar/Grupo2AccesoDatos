@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "dgSpecHash": "lv2T+h/H/ndbGAa0HsBo5rISQPVvG4ZqJSFhebe0EoU0mhVdsa2vsmgrfOf52U54KUzm81ymb2PpWV0yIuaqgA==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\jose.bayonachunga\\Documents\\ProyectoDAM\\ProyectoDAM\\API_CasaApuestas\\CasaApuestasAPI_csharp\\CasaApuestasAPI_csharp.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\jose.bayonachunga\\.nuget\\packages\\microsoft.extensions.apidescription.server\\3.0.0\\microsoft.extensions.apidescription.server.3.0.0.nupkg.sha512",
+    "C:\\Users\\jose.bayonachunga\\.nuget\\packages\\microsoft.openapi\\1.2.3\\microsoft.openapi.1.2.3.nupkg.sha512",
+    "C:\\Users\\jose.bayonachunga\\.nuget\\packages\\swashbuckle.aspnetcore\\6.2.3\\swashbuckle.aspnetcore.6.2.3.nupkg.sha512",
+    "C:\\Users\\jose.bayonachunga\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\6.2.3\\swashbuckle.aspnetcore.swagger.6.2.3.nupkg.sha512",
+    "C:\\Users\\jose.bayonachunga\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\6.2.3\\swashbuckle.aspnetcore.swaggergen.6.2.3.nupkg.sha512",
+    "C:\\Users\\jose.bayonachunga\\.nuget\\packages\\swashbuckle.aspnetcore.swaggerui\\6.2.3\\swashbuckle.aspnetcore.swaggerui.6.2.3.nupkg.sha512"
+  ],
+  "logs": []
+}
