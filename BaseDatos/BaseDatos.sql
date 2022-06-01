@@ -7,7 +7,7 @@ ALTER ROLE [db_owner] ADD MEMBER [bayonaJose]
 
 /** Creacion de tablas**/
 
-
+drop table USUARIO
 CREATE TABLE USUARIO(
 	id_usuario INT IDENTITY(1,1) PRIMARY KEY,
 	nombre VARCHAR(255) NOT NULL UNIQUE,
@@ -15,7 +15,7 @@ CREATE TABLE USUARIO(
 	saldo DECIMAL(10,4) NOT NULL
 	)
 
-Select * from usuario
+Select * from usuario where nombre = 'Usuario6'
 
 CREATE TABLE TIPO_EVENTO(
 	id_tipo_evento INT IDENTITY(1,1) PRIMARY KEY,
@@ -153,8 +153,6 @@ values  (0, 'Correcto'),
 		(4, 'Evento cerrado'),
 		(5, 'Usuario no registrado'),
 		(6, 'Falta que se realice evento') 
-
-
 
 
 Select * from usuario

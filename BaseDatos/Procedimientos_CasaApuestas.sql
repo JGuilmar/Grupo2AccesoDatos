@@ -22,13 +22,12 @@ as
 		set @codigoError = 1
 	select descripcion from CODIGOS_ERROR where codigo = @codigoError
 
-exec registroUsuario 'Usuario8', 'abc123457'
+exec registroUsuario 'Usuario11', 'abc123457'
 
 
 /** 
 	Login de un usuario 
 						 **/
-drop procedure loginUsuario
 go
 create procedure loginUsuario
 	@usuario varchar(255), @clave varchar(255)
@@ -44,16 +43,15 @@ as
 				select descripcion from CODIGOS_ERROR where codigo = 2
 		end
 
-exec loginUsuario 'Usuario8', 'abc123'
+exec loginUsuario 'Usuario7', 'abc123456'
 
 
 /** 
 	Ingreso de saldo 
 					 **/
 GO
-create procedure ingresoSaldo
-	@cantidad int, 
-	@usuarioId  int
+create procedure ingresoSaldo 
+	@usuarioId  int, @cantidad int
 as
 	--Declaramos variables
 	declare @saldoUsuario decimal(10,3), @saldoInicial decimal(10,3), @saldoFinal decimal (10,3)
@@ -68,9 +66,9 @@ as
 			Insert into TRANSACCION (id_tipo_transaccion, fecha_transaccion, id_usuario, monto, saldo_inicial, saldo_final)
 			values (1, GETDATE(), @usuarioId, @cantidad, @saldoInicial, @saldoFinal)
 		commit tran
-	select descripcion from CODIGOS_ERROR where codigo=0
+	select nombre, saldo from USUARIO where id_usuario = @usuarioId
 
-exec ingresoSaldo 20,7
+exec ingresoSaldo 7, 20
 
 
 /** 
@@ -78,7 +76,7 @@ exec ingresoSaldo 20,7
 					**/
 GO
 create procedure retireSaldo
-	@cantidad int, @usuarioId  int
+	 @usuarioId  int, @cantidad int
 as
 	--Declaramos variables
 	declare @saldoUsuario decimal(10,3), @saldoInicial decimal(10,3), @saldoFinal decimal (10,3), @codigoError int
@@ -99,9 +97,9 @@ as
 		end
 	else
 		set @codigoError = 3
-	select descripcion from CODIGOS_ERROR where codigo=@codigoError
+	select descripcion from CODIGOS_ERROR where codigo = @codigoError
 
-exec retireSaldo 15,7
+exec retireSaldo 5, 15
 
 /** 
 	Realizar apuesta 
@@ -149,7 +147,6 @@ exec apostar 5, 10, 5
 /** 
 	Muestra el saldo actual del usuario 
 										**/
-drop procedure mostrarSaldoUsuario
 go 
 create procedure mostrarSaldoUsuario
 	@usuarioId int
@@ -164,8 +161,7 @@ exec mostrarSaldoUsuario 1
 
 /**
 	Mostrar Tipos de eventos 
-							 **/
-drop procedure mostrarTiposEventos							 
+							 **/					 
 GO
 create procedure mostrarTiposEventos
 as
