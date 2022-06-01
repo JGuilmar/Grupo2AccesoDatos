@@ -22,24 +22,29 @@ as
 		set @codigoError = 1
 	select descripcion from CODIGOS_ERROR where codigo = @codigoError
 
-exec registroUsuario 'Usuario7', 'abc123456'
+exec registroUsuario 'Usuario8', 'abc123457'
 
 
 /** 
 	Login de un usuario 
 						 **/
-
+drop procedure loginUsuario
 go
 create procedure loginUsuario
 	@usuario varchar(255), @clave varchar(255)
 as
-	--Verificamos si los datos introducidos son correctos.
+	--Verificamos si los datos introducidos son correctos
 	if(select count(*) from USUARIO where @usuario = nombre and @clave = clave) = 1
 		select descripcion from CODIGOS_ERROR where codigo = 0
 	else
-		select descripcion from CODIGOS_ERROR where codigo = 2
+		begin
+			if(select count(*) from USUARIO where @usuario = nombre) = 0 and (select count(*) from USUARIO where @clave = clave) = 0
+				select descripcion from CODIGOS_ERROR where codigo = 5
+			else
+				select descripcion from CODIGOS_ERROR where codigo = 2
+		end
 
-exec loginUsuario 'Usuario7', 'abc123456'
+exec loginUsuario 'Usuario8', 'abc123'
 
 
 /** 
@@ -144,6 +149,7 @@ exec apostar 5, 10, 5
 /** 
 	Muestra el saldo actual del usuario 
 										**/
+drop procedure mostrarSaldoUsuario
 go 
 create procedure mostrarSaldoUsuario
 	@usuarioId int
@@ -159,6 +165,7 @@ exec mostrarSaldoUsuario 1
 /**
 	Mostrar Tipos de eventos 
 							 **/
+drop procedure mostrarTiposEventos							 
 GO
 create procedure mostrarTiposEventos
 as

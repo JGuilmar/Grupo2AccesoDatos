@@ -1,11 +1,9 @@
---CREATE DATABASE casaApuestas BetIt
-
-CREATE DATABASE BetIt
-CREATE LOGIN [jbayonac] WITH PASSWORD='abc123..', DEFAULT_DATABASE=[BetIt]
+CREATE DATABASE BetHouse
+CREATE LOGIN [bayonaJose] WITH PASSWORD='abc12345..', DEFAULT_DATABASE=[BetHouse]
 GO
-USE [BetIt]
-CREATE USER [jbayonac] FOR LOGIN [jbayonac]
-ALTER ROLE [db_owner] ADD MEMBER [jbayonac]
+USE [BetHouse]
+CREATE USER [bayonaJose] FOR LOGIN [bayonaJose]
+ALTER ROLE [db_owner] ADD MEMBER [bayonaJose]
 
 /** Creacion de tablas**/
 
@@ -150,7 +148,7 @@ drop table CODIGOS_ERROR
 INSERT INTO CODIGOS_ERROR(codigo, descripcion) 
 values  (0, 'Correcto'),
 		(1, 'Usuario ya registrado'),
-		(2, 'Datos incorrectos incorrectos'),
+		(2, 'Datos incorrectos'),
 		(3, 'Saldo insuficiente'),
 		(4, 'Evento cerrado'),
 		(5, 'Usuario no registrado'),
