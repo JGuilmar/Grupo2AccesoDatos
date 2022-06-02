@@ -68,7 +68,7 @@ as
 		commit tran
 	select nombre, saldo from USUARIO where id_usuario = @usuarioId
 
-exec ingresoSaldo 7, 20
+exec ingresoSaldo 7, 30
 
 
 /** 
@@ -141,7 +141,7 @@ as
 			set @codigoError = 4
 		select descripcion from CODIGOS_ERROR where codigo = @codigoError
 
-exec apostar 5, 10, 5
+exec apostar 7, 10, 5
 
 
 /** 
@@ -151,17 +151,13 @@ go
 create procedure mostrarSaldoUsuario
 	@usuarioId int
 as
-	if(select count(*) from USUARIO where @usuarioId = id_usuario ) = 1
-		select saldo from USUARIO where id_usuario = @usuarioId
-	else
-		select descripcion from CODIGOS_ERROR where codigo = 5
+	select saldo from USUARIO where id_usuario = @usuarioId
 
 exec mostrarSaldoUsuario 1
 
-
 /**
 	Mostrar Tipos de eventos 
-							 **/					 
+							 **/
 GO
 create procedure mostrarTiposEventos
 as
@@ -178,8 +174,26 @@ create procedure mostrarEventos
 as
 	select * from EVENTO where fecha > GETDATE()
 
-exec mostrarEventos 
+  
 
+/**
+	Mostrar opciones de eventos disponibles
+											**/
+go 
+create procedure verOpcionesEvento
+	@eventoId int
+as
+	declare @fechaEvento datetime
+	set @fechaEvento = (select fecha from EVENTO where @eventoId = id_evento)
+	if @fechaEvento > GETDATE()
+		select id_opcion, fecha, nombre_evento, nombre_opcion, multiplicador 
+		from EVENTO LEFT JOIN OPCION 
+		on EVENTO.id_evento = OPCION.id_evento
+		where @eventoId = OPCION.id_evento
+
+exec verOpcionesEvento 4
+
+drop procedure verOpcionesEvento
 /**
 	Ver apuestas del usuario
 							 **/
@@ -188,13 +202,12 @@ create procedure verApuestas
 	@usuarioId int
 as
 	--Consultamos y devolvemos datos de las tablas APUESTA y OPCION
-	select cantidad, apuesta.multiplicador, nombre_opcion, ganancia = (cantidad*apuesta.multiplicador), fecha_apuesta
+	select fecha_apuesta, cantidad, apuesta.multiplicador, nombre_opcion, ganancia = (cantidad*apuesta.multiplicador), ganador 
 	from APUESTA LEFT JOIN OPCION on apuesta.id_opcion = opcion.id_opcion
 	where apuesta.id_usuario = @usuarioId
 	order by fecha_apuesta
 
-exec verApuestas 5
-
+exec verApuestas 1
 
 /**
 	Ver transacciones del usuario

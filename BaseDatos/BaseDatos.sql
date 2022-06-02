@@ -12,7 +12,7 @@ CREATE TABLE USUARIO(
 	id_usuario INT IDENTITY(1,1) PRIMARY KEY,
 	nombre VARCHAR(255) NOT NULL UNIQUE,
 	clave VARCHAR(255) NOT NULL,
-	saldo DECIMAL(10,4) NOT NULL
+	saldo DECIMAL(10,2) NOT NULL
 	)
 
 Select * from usuario where nombre = 'Usuario6'
@@ -47,20 +47,22 @@ CREATE TABLE TRANSACCION(
 	id_tipo_transaccion INT NOT NULL REFERENCES TIPO_TRANSACCION(id_tipo_transaccion),
 	fecha_transaccion DATETIME NOT NULL,
 	id_usuario INT NOT NULL REFERENCES USUARIO(id_usuario),
-	monto DECIMAL(10,3) NOT NULL,
-	saldo_inicial DECIMAL(10,3) NOT NULL,	
-	saldo_final DECIMAL(10,3) NOT NULL,
+	monto DECIMAL(10,2) NOT NULL,
+	saldo_inicial DECIMAL(10,2) NOT NULL,	
+	saldo_final DECIMAL(10,2) NOT NULL,
 	)
 
 Select * from TRANSACCION
+
 
 CREATE TABLE OPCION(
 	id_opcion INT IDENTITY(1,1) PRIMARY KEY,
 	id_evento INT NOT NULL REFERENCES EVENTO(id_evento),
 	nombre_opcion VARCHAR(255),
-	multiplicador DECIMAL(10,3) NOT NULL,
+	multiplicador DECIMAL(10,2) NOT NULL,
 	ganador bit
 )
+
 
 Select * from OPCION
 
@@ -69,8 +71,8 @@ CREATE TABLE APUESTA(
 	id_usuario INT NOT NULL REFERENCES USUARIO(id_usuario),
 	id_opcion INT NOT NULL REFERENCES OPCION(id_opcion),
 	fecha_apuesta DATETIME NOT NULL,
-	cantidad DECIMAL(10,3) NOT NULL,
-	multiplicador DECIMAL(10,3) NOT NULL,
+	cantidad DECIMAL(10,2) NOT NULL,
+	multiplicador DECIMAL(10,2) NOT NULL,
 	id_transaccionP INT NOT NULL REFERENCES TRANSACCION(id_transaccion),
 	id_transaccionC INT REFERENCES TRANSACCION(id_transaccion),
 )
@@ -158,9 +160,8 @@ values  (0, 'Correcto'),
 Select * from usuario
 Select * from TIPO_EVENTO
 Select * from EVENTO
+Select * from OPCION
 Select * from TIPO_TRANSACCION
 Select * from TRANSACCION
-Select * from EVENTO
-Select * from OPCION
 Select * from APUESTA
 Select * from CODIGOS_ERROR
