@@ -36,7 +36,8 @@ namespace CasaApuestasAPI_csharp.Controllers
         {
             DataTable dtIngreso = conexionBaseDatos.ejecutarConsulta($"exec ingresoSaldo {usuarioId}, {monto}");
 
-            return new string[] { $"Usuario: {dtIngreso.Rows[0]["nombre"].ToString()}", $"Saldo  : {dtIngreso.Rows[0]["saldo"].ToString()}" };
+            return new string[] { $"Usuario: {dtIngreso.Rows[0]["nombre"].ToString()}", 
+                                  $"Saldo  : {dtIngreso.Rows[0]["saldo"].ToString()}" };
         }
 
         //Retiro de dinero del usuario

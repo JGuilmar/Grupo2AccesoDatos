@@ -68,7 +68,7 @@ as
 		commit tran
 	select nombre, saldo from USUARIO where id_usuario = @usuarioId
 
-exec ingresoSaldo 7, 30
+exec ingresoSaldo 4, 30
 
 
 /** 
@@ -174,7 +174,7 @@ create procedure mostrarEventos
 as
 	select * from EVENTO where fecha > GETDATE()
 
-  
+exec mostrarEventos
 
 /**
 	Mostrar opciones de eventos disponibles
@@ -193,7 +193,7 @@ as
 
 exec verOpcionesEvento 4
 
-drop procedure verOpcionesEvento
+
 /**
 	Ver apuestas del usuario
 							 **/
@@ -225,3 +225,126 @@ as
 	ORDER BY fecha_transaccion
 
 exec verTransacciones 1
+
+
+
+
+
+
+/**
+ *
+	PROCEDIMIENTOS PARA EL ADMINISTRADOR
+									*
+									**/
+
+/** 
+	Crear tipo evento
+						**/
+go
+create procedure crearTipoEvento
+	@nombreTipoEvento varchar(255), @descripcion varchar(255)
+as
+	begin tran
+		insert into TIPO_EVENTO(nombre, descripcion) values (@nombreTipoEvento, @descripcion)
+		select top(1) * from TIPO_EVENTO order by id_tipo_evento desc
+	commit
+
+exec crearTipoEvento 'Mundial Qatar 2022', 'Mundial de fútbol con 32 selecciones'
+
+
+/**
+	Crear evento
+				 **/
+go
+create procedure crearEvento
+	@idTipoEvento int, @nombreEvento varchar(255), @fechaEvento datetime
+as
+	begin tran
+		Insert into EVENTO(nombre_evento, fecha, id_tipo_evento) values (@nombreEvento, @fechaEvento, @idTipoEvento)
+		select top(1) * from EVENTO order by id_evento desc
+	commit
+
+exec crearEvento 6, 'Qatar vs Ecuador', '2022-11-21T17:00:00'
+
+
+/**
+	Crear opcion de evento
+							**/
+go 
+create procedure crearOpcion
+	@idEvento int, @nombreOpcion varchar(255), @multiplicador decimal(10,2)
+as
+	begin tran
+		insert into OPCION(id_evento, nombre_opcion, multiplicador) values (@idEvento, @nombreOpcion, @multiplicador)
+		select top(1) * from OPCION order by id_opcion desc
+	commit
+
+exec crearOpcion 9,'Ecuador', 1.5
+
+
+
+/** 
+	Cerrar opcion 
+					**/
+go
+create procedure cerrarOpcion
+	@opcionId int, @ganador bit
+as
+	declare @usuarioId int, @saldoInicial decimal(10,3), @saldoFinal decimal(10,3), @transaccionId int, @apuestaId int, @cantidad int, @eventoId int
+	update opcion set ganador = @ganador where id_opcion = @opcionId
+	if @ganador = 1
+	begin
+	--Creamos cursor para que al momento de elegir el ganador se hagas las pagas respectivas de las apuestas ganadas
+		declare cobrar_Apuesta cursor for select id_apuesta, cantidad * multiplicador, id_usuario from apuesta where id_opcion = @opcionId
+		open cobrar_Apuesta
+			fetch next from cobrar_Apuesta into @apuestaId, @cantidad, @usuarioId
+			while @@FETCH_STATUS = 0
+			begin
+				begin tran
+					set @saldoInicial = (select saldo from USUARIO where @usuarioId = id_usuario)
+					set @saldoFinal = @saldoInicial + @cantidad
+					Insert into TRANSACCION (id_tipo_transaccion, fecha_transaccion, id_usuario, monto, saldo_inicial, saldo_final)
+					values (4, GETDATE(), @usuarioId, @cantidad, @saldoInicial, @saldoFinal)
+					update APUESTA set id_transaccionC = SCOPE_IDENTITY() where id_apuesta = @apuestaId
+					update USUARIO set saldo = @saldoFinal where id_usuario = @usuarioId
+				commit tran
+				fetch next from cobrar_Apuesta into @apuestaId, @cantidad, @usuarioId
+			end
+		close cobrar_Apuesta
+		deallocate cobrar_Apuesta
+		--set @eventoId = (select id_evento from OPCION where @opcionId = id_opcion)
+		--update OPCION set ganador = 0 where @eventoId = id_evento and @opcionId <> id_opcion
+		--Select * from OPCION where @eventoId = id_evento
+		select descripcion from CODIGOS_ERROR where codigo = 0
+	end
+
+exec cerrarOpcion 4,1
+
+
+/**
+	Actualizar multiplicador opcion
+					**/
+go 
+create procedure actualizarMultiplicador
+	@eventoId int, @nombreOpcion varchar(255), @multiplicadorOpcion decimal(10,2)
+as 
+	declare @fechaEvento datetime
+	set @fechaEvento = (select fecha from EVENTO where @eventoId = id_evento)
+	if @fechaEvento > GETDATE()
+		begin
+			update OPCION set multiplicador = @multiplicadorOpcion where @eventoId = id_evento and @nombreOpcion =nombre_opcion
+			Select descripcion from CODIGOS_ERROR where codigo = 0
+		end
+	else
+		Select descripcion from CODIGOS_ERROR where codigo = 4
+
+exec actualizarMultiplicador 3, 'Nadal', 1.40
+
+
+
+/** 
+	Listando procedimientos almacenados creados 
+												**/
+SELECT ROUTINE_NAME FROM INFORMATION_SCHEMA.ROUTINES 
+   WHERE ROUTINE_TYPE = 'PROCEDURE'
+   ORDER BY ROUTINE_NAME

@@ -130,8 +130,8 @@ VALUES  (1, '2022-03-01 21:00', 5, 20, 0, 20),
 		(4, '2022-04-07 14:10', 3, 50, 20, 70)
 
 INSERT INTO OPCION(id_evento,nombre_opcion,multiplicador,ganador)
-values  (1,'Madrid', 2.32, NULL), (1, 'Barcelona', 2.54, NULL),(2,'Empate',1.94,NULL),
- 		(2,'Deportivo',3,NULL),(2,'Sevilla',1.1,NULL),(2,'Empate',1.94,NULL),(2,'Empate',1.94,NULL),
+values  (1,'Madrid', 2.32, NULL), (1, 'Barcelona', 2.54, NULL),(1,'Empate',1.94,NULL),
+ 		(2,'Deportivo',3,NULL),(2,'Sevilla',1.1,NULL),(2,'Empate',1.94,NULL),
 		(3,'Nadal',1.2,NULL),(3,'Federer',1.9,NULL),
 		(4,'Djocovik',1.01,NULL),(4,'Pepe',11,NULL),
 		(5,'10',4,NULL),(5,'11',5,NULL),(5,'12',7,NULL),(5,'13',5,NULL),(5,'14',5,NULL),(5,'15',5,NULL),
@@ -142,7 +142,7 @@ values  (1,'Madrid', 2.32, NULL), (1, 'Barcelona', 2.54, NULL),(2,'Empate',1.94,
 
 
 INSERT INTO APUESTA(id_usuario, id_opcion, fecha_apuesta, cantidad, multiplicador, id_transaccionP, id_transaccionC) 
-values  (1, 1, '2022-05-22T19:30:00', 20, 2.3, 3, 4),
+values  (1, 47, '2022-05-28T19:30:00', 20, 2.89, 54, null),
 		(1, 2, '2022-05-24T18:00:00', 40, 2.5, 4, null),
 		(3, 7, '2022-03-01T00:00:00', 100, 1.64, 7, NULL)
 
